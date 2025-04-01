@@ -113,13 +113,11 @@ await TerminateRestart.instance.restartApp(
 );
 
 // Full app restart with confirmation
-await TerminateRestart.instance.restartApp(
-  options: const TerminateRestartOptions(
-    terminate: true,
-  ),
-  mode: RestartMode.withConfirmation,
-  dialogTitle: 'Restart Required',
-  dialogMessage: 'Do you want to restart the app?',
+await TerminateRestart.instance.restartAppWithConfirmation(
+  context,
+  terminate: true,
+  title: 'Restart Required',
+  message: 'The app needs to restart to apply changes.',
 );
 ```
 
@@ -175,23 +173,19 @@ await TerminateRestart.instance.restartApp(
 );
 
 // UI-only restart with confirmation
-await TerminateRestart.instance.restartApp(
-  options: const TerminateRestartOptions(
-    terminate: false,
-  ),
-  mode: RestartMode.withConfirmation,
-  dialogTitle: 'Refresh UI',
-  dialogMessage: 'Do you want to refresh the app UI?',
+await TerminateRestart.instance.restartAppWithConfirmation(
+  context,
+  terminate: false,
+  title: 'Refresh UI',
+  message: 'Do you want to refresh the app UI?',
 );
 
 // Full app restart with confirmation
-await TerminateRestart.instance.restartApp(
-  options: const TerminateRestartOptions(
-    terminate: true,
-  ),
-  mode: RestartMode.withConfirmation,
-  dialogTitle: 'Restart App',
-  dialogMessage: 'Do you want to restart the app?',
+await TerminateRestart.instance.restartAppWithConfirmation(
+  context,
+  terminate: true,
+  title: 'Restart App',
+  message: 'Do you want to restart the app?',
 );
 ```
 
@@ -228,23 +222,19 @@ await TerminateRestart.instance.restartApp(
   ),
 );``` |
 | With Confirmation | Show dialog before restart | ```dart
-await TerminateRestart.instance.restartApp(
-  options: const TerminateRestartOptions(
-    terminate: true,
-  ),
-  mode: RestartMode.withConfirmation,
-  dialogTitle: 'Restart Required',
-  dialogMessage: 'Do you want to restart?',
+await TerminateRestart.instance.restartAppWithConfirmation(
+  context,
+  terminate: true,
+  title: 'Restart Required',
+  message: 'Do you want to restart?',
 );``` |
 | After Update | Restart after applying updates | ```dart
-await TerminateRestart.instance.restartApp(
-  options: const TerminateRestartOptions(
-    terminate: true,
-    clearData: false,
-  ),
-  mode: RestartMode.withConfirmation,
-  dialogTitle: 'Update Ready',
-  dialogMessage: 'Restart to apply updates?',
+await TerminateRestart.instance.restartAppWithConfirmation(
+  context,
+  terminate: true,
+  clearData: false,
+  title: 'Update Ready',
+  message: ''Restart to apply updates?',
 );``` |
 
 ### Advanced Usage
@@ -298,13 +288,11 @@ Widget build(BuildContext context) {
 1. **After Dynamic Updates**
    ```dart
    // After downloading new assets/code
-   await TerminateRestart.instance.restartApp(
-     options: const TerminateRestartOptions(
-       terminate: true,
-     ),
-     mode: RestartMode.withConfirmation,
-     dialogTitle: 'Update Ready',
-     dialogMessage: 'Restart to apply updates?',
+   await TerminateRestart.instance.restartAppWithConfirmation(
+      context,
+      terminate: true,
+      title: 'Update Ready',
+      message: 'Restart to apply updates?',
    );
    ```
 
@@ -334,15 +322,13 @@ Widget build(BuildContext context) {
 4. **With Confirmation Dialog**
    ```dart
    // Show confirmation dialog before restart
-   await TerminateRestart.instance.restartApp(
-     options: const TerminateRestartOptions(
-       terminate: true,
-     ),
-     mode: RestartMode.withConfirmation,
-     dialogTitle: 'Restart Required',
-     dialogMessage: 'Do you want to restart the app?',
-     confirmButtonText: 'Restart',
-     cancelButtonText: 'Later',
+   await TerminateRestart.instance.restartAppWithConfirmation(
+      context,
+      terminate: true,
+      title: 'Restart Required',
+      message: 'Do you want to restart the app?',
+      confirmText: 'Restart',
+      cancelText: 'Later',
    );
    ```
 
@@ -636,14 +622,12 @@ Future<void> changeLanguage(String newLocale) async {
   await prefs.setString('locale', newLocale);
   
   // Restart UI only with confirmation
-  await TerminateRestart.instance.restartApp(
-    options: const TerminateRestartOptions(
-      terminate: false,
-      preserveUserDefaults: true,
-    ),
-    mode: RestartMode.withConfirmation,
-    dialogTitle: 'Language Change',
-    dialogMessage: 'Restart app to apply new language?',
+  await TerminateRestart.instance.restartAppWithConfirmation(
+    context,
+    terminate: false,
+    preserveUserDefaults: true,
+    title: 'Language Change',
+    message: 'Restart app to apply new language?',
   );
 }
 ```
@@ -656,15 +640,13 @@ Future<void> installUpdate() async {
     await downloadUpdate();
     
     // Apply update with confirmation
-    final confirmed = await TerminateRestart.instance.restartApp(
-      options: const TerminateRestartOptions(
-        terminate: true,
-        clearData: false,
-        preserveKeychain: true,
-      ),
-      mode: RestartMode.withConfirmation,
-      dialogTitle: 'Update Ready',
-      dialogMessage: 'Install update and restart?',
+    final confirmed = await TerminateRestart.instance.restartAppWithConfirmation(
+      context,
+      terminate: true,
+      clearData: false,
+      preserveKeychain: true,
+      title: 'Update Ready',
+      message: 'Install update and restart?',
     );
     
     if (!confirmed) {
